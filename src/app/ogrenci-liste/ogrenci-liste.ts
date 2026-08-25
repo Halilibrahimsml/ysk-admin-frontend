@@ -75,7 +75,7 @@ export class OgrenciListeComponent implements OnInit {
     this.listele(); 
     
     // ÇÖZÜM BURADA: Sadece (data) yazan yeri (data: any) olarak değiştirdik!
-    this.http.get('http://localhost:8080/api/dersler/tum-dersler').subscribe((data: any) => {
+    this.http.get('https://ysk-admin-backend-production.up.railway.app/api/dersler/tum-dersler').subscribe((data: any) => {
       this.tumDersler = data;
     });
   }
@@ -89,7 +89,7 @@ export class OgrenciListeComponent implements OnInit {
     return;
   }
   
-  this.http.post('http://localhost:8080/api/dersler/ekle', this.yeniDers).subscribe({
+  this.http.post('https://ysk-admin-backend-production.up.railway.app/api/dersler/ekle', this.yeniDers).subscribe({
     next: () => {
       this.toastGoster("✅ Yeni ders sisteme başarıyla eklendi!", "basari");
       this.yeniDers = { dersKodu: '', dersAdi: '', kredi: null }; // Formu temizle
@@ -114,7 +114,7 @@ export class OgrenciListeComponent implements OnInit {
 
     if (secilenOgrenci) {
       // 2. Öğrencinin MEVCUT notlarını arka plandan çekiyoruz 
-      this.http.get<any[]>(`http://localhost:8080/api/notlar/ogrenci/${secilenOgrenci.ogrenciNo}`).subscribe(mevcutNotlar => {
+      this.http.get<any[]>(`https://ysk-admin-backend-production.up.railway.app/api/notlar/ogrenci/${secilenOgrenci.ogrenciNo}`).subscribe(mevcutNotlar => {
         
         // 3. Admin'in seçtiği ders, bu öğrencinin mevcut notları arasında var mı?
         const oncedenAlinmisNot = mevcutNotlar.find(n => n.ders?.id === this.yeniNot.ders.id);
@@ -129,7 +129,7 @@ export class OgrenciListeComponent implements OnInit {
         }
 
         // 4. Şimdi veriyi /ekle endpoint'ine gönderiyoruz
-        this.http.post('http://localhost:8080/api/notlar/ekle', this.yeniNot).subscribe({
+        this.http.post('https://ysk-admin-backend-production.up.railway.app/api/notlar/ekle', this.yeniNot).subscribe({
           next: () => {
             this.toastGoster("✅ İşlem Başarılı: Not eklendi veya güncellendi!", "basari");
             // Formu temizle

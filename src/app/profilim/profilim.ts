@@ -32,7 +32,7 @@ export class ProfilimComponent implements OnInit {
     
     if (ogrenciNo) {
       // 1. ÖĞRENCİ KİŞİSEL BİLGİLERİNİ ÇEKME 
-      this.http.get(`http://localhost:8080/api/ogrenciler/numara/${ogrenciNo}`)
+      this.http.get(`https://ysk-admin-backend-production.up.railway.app/api/ogrenciler/numara/${ogrenciNo}`)
         .subscribe({
           next: (veri) => {
             console.log("Backend'den gelen veri ->", veri);
@@ -46,7 +46,7 @@ export class ProfilimComponent implements OnInit {
 
       // 2. YENİ EKLENDİ: ÖĞRENCİ NOTLARINI ÇEKME
       // Senin elindeki http nesnesini kullanarak notları da arka plandan istiyoruz
-      this.http.get<any[]>(`http://localhost:8080/api/notlar/ogrenci/${ogrenciNo}`)
+      this.http.get<any[]>(`https://ysk-admin-backend-production.up.railway.app/api/notlar/ogrenci/${ogrenciNo}`)
         .subscribe({
           next: (gelenNotlar) => {
             console.log("Backend'den gelen notlar ->", gelenNotlar);
@@ -59,7 +59,7 @@ export class ProfilimComponent implements OnInit {
         });
     }
     // Tüm dersleri backend'den çek
-    this.http.get('http://localhost:8080/api/dersler/tum-dersler').subscribe((data: any) => {
+    this.http.get('https://ysk-admin-backend-production.up.railway.app/api/dersler/tum-dersler').subscribe((data: any) => {
       this.tumDersler = data;
     });
   }
@@ -73,7 +73,7 @@ export class ProfilimComponent implements OnInit {
   yeniNot: any = { vizeNotu: null, finalNotu: null, ogrenci: {id: 1}, ders: {id: 1} }; // 1 nolu öğrenci/ders örnek
 
   kaydet() {
-    this.http.post('http://localhost:8080/api/notlar/ekle', this.yeniNot).subscribe(() => {
+    this.http.post('https://ysk-admin-backend-production.up.railway.app/api/notlar/ekle', this.yeniNot).subscribe(() => {
       alert("Not başarıyla kaydedildi!");
       location.reload(); // Sayfayı yenileyip yeni notu tabloda göster
     });
@@ -96,7 +96,7 @@ export class ProfilimComponent implements OnInit {
       // Vize ve Final göndermiyoruz, veritabanına boş (null) gidecek
     };
 
-    this.http.post('http://localhost:8080/api/notlar/ekle', yeniKayit).subscribe(() => {
+    this.http.post('https://ysk-admin-backend-production.up.railway.app/api/notlar/ekle', yeniKayit).subscribe(() => {
       alert("✅ Derse başarıyla kayıt oldunuz!");
       location.reload(); // Sayfayı yenile ki yeni ders aşağıdaki tabloya düşsün
     });
@@ -113,7 +113,7 @@ dersEkle() {
   }
 
   // Spring Boot'a POST isteği atıyoruz (DersController'da /ekle endpointi olduğunu varsayıyoruz)
-  this.http.post('http://localhost:8080/api/dersler/ekle', this.yeniDers).subscribe({
+  this.http.post('https://ysk-admin-backend-production.up.railway.app/api/dersler/ekle', this.yeniDers).subscribe({
     next: () => {
       alert("✅ Yeni ders sisteme başarıyla eklendi!");
       this.yeniDers = { dersKodu: '', dersAdi: '', kredi: null }; // Formu temizle

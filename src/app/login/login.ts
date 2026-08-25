@@ -148,7 +148,7 @@ export class LoginComponent implements OnInit {
       yeniSifre: this.resetData.yeniSifre
     };
 
-    this.http.post('http://localhost:8080/api/auth/sifre-sifirla', gidenVeri, { responseType: 'text' })
+    this.http.post('https://ysk-admin-backend-production.up.railway.app/api/auth/sifre-sifirla', gidenVeri, { responseType: 'text' })
       .subscribe({
         next: (cevap: any) => {
           this.toastGoster("✅ Şifreniz başarıyla yenilendi!", "basari");
