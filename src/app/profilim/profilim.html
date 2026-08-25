@@ -1,0 +1,141 @@
+<div style="padding: 20px; font-family: Arial, sans-serif; background-color: #f4f7f6; min-height: 100vh;">
+  
+  <!-- Üst Bar -->
+  <div style="display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
+    <h2 style="margin: 0; color: #2c3e50;">Öğrenci Portalı</h2>
+    <button (click)="cikisYap()" style="padding: 10px 15px; background-color: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+      🚪 Çıkış Yap
+    </button>
+  </div>
+
+  <!-- Ana İçerik -->
+  <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+    
+    <!-- Sol: Profil Kartı -->
+    <div style="flex: 1; min-width: 250px; background: white; padding: 30px 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center;">
+      <!-- Profil Fotoğrafı Alanı -->
+      <div style="width: 100px; height: 100px; background-color: #2c3e50; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; margin: 0 auto 15px;">
+        👨‍🎓
+      </div>
+      
+      <!-- İsim ve Numara (Dinamik) -->
+      <h3 style="margin: 10px 0; color: #2c3e50;">{{ aktifOgrenci?.isim }} {{ aktifOgrenci?.soyisim }}</h3>
+      <p style="color: #7f8c8d; margin: 5px 0; font-weight: bold;">Öğrenci No: {{ aktifOgrenci?.ogrenciNo }}</p>
+      
+      <p style="color: #7f8c8d; margin: 5px 0;">Bölüm: Yazılım Mühendisliği</p>
+    </div>
+
+    <!-- Sağ: Dinamik İçerik Alanı -->
+    <div style="flex: 2; min-width: 300px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+      
+      <!-- ========================================================= -->
+      <!-- SADECE ROLÜ ADMIN OLANLAR İÇİN: YENİ NOT GİRİŞİ PANELİ -->
+      <!-- ========================================================= -->
+      <div *ngIf="aktifKullaniciRolu === 'ADMIN'" style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #dee2e6;">
+        <h4 style="margin-top: 0; color: #2c3e50;">Yeni Not Girişi (Admin Paneli)</h4>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <input type="number" [(ngModel)]="yeniNot.vizeNotu" placeholder="Vize" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 80px;">
+          <input type="number" [(ngModel)]="yeniNot.finalNotu" placeholder="Final" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 80px;">
+          <button (click)="kaydet()" style="padding: 8px 15px; background-color: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Kaydet</button>
+        </div>
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- SADECE ÖĞRENCİLERİN GÖREBİLECEĞİ AÇILIR-KAPANIR PANEL -->
+      <!-- ========================================================= -->
+      <div *ngIf="aktifKullaniciRolu === 'OGRENCI'" style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #dee2e6;">
+        
+        <!-- Tıklanabilir Başlık -->
+        <div (click)="dersSecimAcik = !dersSecimAcik" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none;">
+          <h4 style="margin: 0; color: #2c3e50;">Açılan Dersler (Ders Seçimi)</h4>
+          <span style="color: #7f8c8d; font-size: 16px;">
+            {{ dersSecimAcik ? '▲ Kapat' : '▼ Aç' }}
+          </span>
+        </div>
+        
+        <!-- Tablo (Sadece dersSecimAcik true ise görünür) -->
+        <div *ngIf="dersSecimAcik" style="overflow-x: auto; margin-top: 15px; border-top: 1px solid #dee2e6; padding-top: 15px;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+            <thead>
+              <tr style="background-color: #ecf0f1; color: #2c3e50;">
+                <th style="padding: 10px; font-weight: bold;">Ders Kodu</th>
+                <th style="padding: 10px; font-weight: bold;">Ders Adı</th>
+                <th style="padding: 10px; font-weight: bold;">Kredi</th>
+                <th style="padding: 10px; font-weight: bold;">İşlem</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ders of tumDersler" style="border-bottom: 1px solid #eee;">
+                <td style="padding: 10px; font-weight: bold; color: #7f8c8d;">{{ ders.dersKodu }}</td>
+                <td style="padding: 10px; color: #34495e;">{{ ders.dersAdi }}</td>
+                <td style="padding: 10px; color: #e67e22; font-weight: bold;">{{ ders.kredi }} AKTS</td>
+                <td style="padding: 10px;">
+                  <button (click)="dersSec(ders.id)" style="background-color: #3498db; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold;">
+                    + Seç
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- HER İKİ ROLÜN DE ORTAK GÖRECEĞİ TABLO -->
+      <!-- ========================================================= -->
+      <h3 style="color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; margin-top: 0;">Dönem Bilgileri</h3>
+      
+      <!-- Dönem Notları Tablosu -->
+      <div style="overflow-x: auto; margin-top: 15px;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 15px;">
+          <thead>
+            <tr style="background-color: #f8f9fa; color: #2c3e50; border-bottom: 2px solid #dee2e6;">
+              <th style="padding: 12px; font-weight: bold;">Ders Adı</th>
+              <th style="padding: 12px; font-weight: bold;">Vize</th>
+              <th style="padding: 12px; font-weight: bold;">Final</th>
+              <th style="padding: 12px; font-weight: bold;">Ortalama</th>
+              <th style="padding: 12px; font-weight: bold;">Harf Notu</th>
+              <th style="padding: 12px; font-weight: bold;">Durum</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+            <!-- Eğer not yoksa uyarı göster -->
+            <tr *ngIf="notlar.length === 0">
+              <td colspan="6" style="padding: 20px; text-align: center; color: #7f8c8d;">
+                Henüz girilmiş bir ders notunuz bulunmamaktadır.
+              </td>
+            </tr>
+
+            <!-- Arka plandan gelen notlar listesinde dönüyoruz -->
+            <tr *ngFor="let not of notlar" style="border-bottom: 1px solid #eee; transition: background-color 0.2s;">
+              <td style="padding: 12px; color: #34495e;">{{ not.ders?.dersAdi }}</td>
+              <td style="padding: 12px; color: #7f8c8d;">{{ not.vizeNotu }}</td>
+              <td style="padding: 12px; color: #7f8c8d;">{{ not.finalNotu }}</td>
+              <td style="padding: 12px; font-weight: bold; color: #2c3e50;">{{ not.ortalama }}</td>
+              
+              <td style="padding: 12px;">
+                <span *ngIf="not.harfNotu" [ngStyle]="{
+                        'background-color': not.durum === 'Geçti' ? '#e8f8f5' : '#fdedec', 
+                        'color': not.durum === 'Geçti' ? '#27ae60' : '#e74c3c'
+                      }" 
+                      style="padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 13px;">
+                  {{ not.harfNotu }}
+                </span>
+                <span *ngIf="!not.harfNotu" style="color: #bdc3c7;">Belirsiz</span>
+              </td>
+              
+              <td style="padding: 12px; font-weight: bold;" 
+                  [ngStyle]="{'color': not.durum === 'Geçti' ? '#27ae60' : (not.durum === 'Kaldı' ? '#e74c3c' : '#bdc3c7')}">
+                {{ not.durum || 'Sınav Bekleniyor' }}
+              </td>
+            </tr>
+          </tbody>
+          
+        </table>
+      </div>
+    </div>
+  </div>
+  
+</div>

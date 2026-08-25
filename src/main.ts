@@ -1,6 +1,8 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
-import { App } from './app/app';
+// Aradığı sınıfın adını AppComponent olarak güncelledik:
+import { AppComponent } from './app/app'; 
 
-bootstrapApplication(App, appConfig)
+// Motoru AppComponent ile başlatıyoruz:
+bootstrapApplication(AppComponent, appConfig)
   .catch((err) => console.error(err));
