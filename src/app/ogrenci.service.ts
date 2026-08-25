@@ -13,7 +13,7 @@ export interface Ogrenci {
   providedIn: 'root'
 })
 export class OgrenciService {
-  private apiUrl = 'http://localhost:8080/api/ogrenciler';
+  private apiUrl = 'https://ysk-admin-backend-production.up.railway.app/api/ogrenciler';
 
   constructor(private http: HttpClient) { }
 
@@ -48,9 +48,9 @@ export class OgrenciService {
   }
   // Öğrencinin notlarını arka plandan çeken servis metodu
 getOgrenciNotlari(ogrenciNo: string) {
-  return this.http.get(`http://localhost:8080/api/notlar/ogrenci/${ogrenciNo}`);
+return this.http.get(`https://ysk-admin-backend-production.up.railway.app/api/notlar/ogrenci/${ogrenciNo}`);
 }
 notEkle(yeniNot: any) {
-  return this.http.post('http://localhost:8080/api/notlar/ekle', yeniNot);
+  return this.http.post('https://ysk-admin-backend-production.up.railway.app/api/notlar/ekle', yeniNot);
 }
 }
