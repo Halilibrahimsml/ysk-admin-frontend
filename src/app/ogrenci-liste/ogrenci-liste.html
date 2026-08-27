@@ -150,8 +150,9 @@
         <option *ngFor="let ders of tumDersler" [ngValue]="ders.id">{{ ders.dersKodu }} - {{ ders.dersAdi }}</option>
       </select>
 
-      <input type="number" [(ngModel)]="yeniNot.vizeNotu" placeholder="Vize" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 80px;">
-      <input type="number" [(ngModel)]="yeniNot.finalNotu" placeholder="Final" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 80px;">
+      <!-- BURASI GÜNCELLENDİ: min ve max eklendi -->
+      <input type="number" min="0" max="100" [(ngModel)]="yeniNot.vizeNotu" placeholder="Vize" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 80px;">
+      <input type="number" min="0" max="100" [(ngModel)]="yeniNot.finalNotu" placeholder="Final" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 80px;">
       <button (click)="notKaydet()" style="padding: 8px 15px; background-color: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Kaydet</button>
     </div>
   </div>
@@ -164,7 +165,9 @@
     <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
       <input type="text" [(ngModel)]="yeniDers.dersKodu" placeholder="Kodu (Örn: YZM301)" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 140px;">
       <input type="text" [(ngModel)]="yeniDers.dersAdi" placeholder="Ders Adı" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 220px;">
-      <input type="number" [(ngModel)]="yeniDers.kredi" placeholder="AKTS" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 80px;">
+      
+      <!-- BURASI GÜNCELLENDİ: min ve max eklendi -->
+      <input type="number" min="1" max="30" [(ngModel)]="yeniDers.kredi" placeholder="AKTS" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 80px;">
       <button (click)="dersEkle()" style="padding: 8px 15px; background-color: #1abc9c; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
         + Dersi Oluştur
       </button>
